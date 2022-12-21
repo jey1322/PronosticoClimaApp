@@ -8,12 +8,14 @@ import kotlinx.coroutines.withContext
 class ClimaService {
 
     private val retrofit = RetrofitHelper.getRetrofit()
+    private lateinit var apiclient: ClimaApiclient
 
-    suspend fun getClima() : ClimaRpModel
+    suspend fun getClima(lat: Double, lon: Double): ClimaRpModel
     {
         return withContext(Dispatchers.IO)
         {
-            val response = retrofit.create(ClimaApiclient::class.java).getAllClima(40.416775, -3.703790)
+            apiclient = retrofit.create(ClimaApiclient::class.java)
+            val response = apiclient.getAllClima(lat, lon)
             response.body()!!
         }
     }
