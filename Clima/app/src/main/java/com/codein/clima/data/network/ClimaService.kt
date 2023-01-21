@@ -14,9 +14,19 @@ class ClimaService {
     {
         return withContext(Dispatchers.IO)
         {
+
             apiclient = retrofit.create(ClimaApiclient::class.java)
             val response = apiclient.getAllClima(lat, lon)
-            response.body()!!
+            if (response.isSuccessful)
+            {
+                response.body()!!
+            }
+            else
+            {
+                ClimaRpModel(coord = ClimaRpModel.Coord(), weather = emptyList(), main = ClimaRpModel.Main())
+            }
+
         }
+
     }
 }
